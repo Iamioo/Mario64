@@ -77,6 +77,104 @@
     <script>
     </script>
   </body>
+  <!-- Touch Controls Overlay -->
+<style>
+  .mobile-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 999999;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .dpad, .action-btns {
+    display: grid;
+    gap: 10px;
+  }
+  .dpad {
+    grid-template-columns: repeat(3, 50px);
+    grid-template-rows: repeat(3, 50px);
+  }
+  .action-btns {
+    grid-template-columns: repeat(2, 60px);
+    grid-template-rows: repeat(2, 60px);
+  }
+  .touch-btn {
+    background: rgba(255, 255, 255, 0.4);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    touch-action: none;
+  }
+  .touch-btn:active {
+    background: rgba(255, 255, 255, 0.8);
+  }
+  .btn-up { grid-column: 2; grid-row: 1; }
+  .btn-left { grid-column: 1; grid-row: 2; }
+  .btn-right { grid-column: 3; grid-row: 2; }
+  .btn-down { grid-column: 2; grid-row: 3; }
+  .btn-a { grid-column: 2; grid-row: 2; }
+  .btn-b { grid-column: 1; grid-row: 2; }
+  .btn-z { grid-column: 1; grid-row: 1; }
+  .btn-s { grid-column: 2; grid-row: 1; }
+</style>
+
+<div class="mobile-controls">
+  <div class="dpad">
+    <div class="touch-btn btn-up" id="btn-up">▲</div>
+    <div class="touch-btn btn-left" id="btn-left">◄</div>
+    <div class="touch-btn btn-right" id="btn-right">►</div>
+    <div class="touch-btn btn-down" id="btn-down">▼</div>
+  </div>
+  <div class="action-btns">
+    <div class="touch-btn btn-z" id="btn-z">Z</div>
+    <div class="touch-btn btn-s" id="btn-s">ST</div>
+    <div class="touch-btn btn-b" id="btn-b">B</div>
+    <div class="touch-btn btn-a" id="btn-a">A</div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    function bindKey(elementId, keyCode) {
+      const btn = document.getElementById(elementId);
+      if (!btn) return;
+
+      const press = (e) => {
+        e.preventDefault();
+        window.dispatchEvent(new KeyboardEvent('keydown', { keyCode: keyCode, bubbles: true }));
+      };
+      const release = (e) => {
+        e.preventDefault();
+        window.dispatchEvent(new KeyboardEvent('keyup', { keyCode: keyCode, bubbles: true }));
+      };
+
+      btn.addEventListener('touchstart', press, { passive: false });
+      btn.addEventListener('touchend', release, { passive: false });
+    }
+
+    // Standard-Tastenbelegungen (KeyCodes)
+    bindKey('btn-up', 38);    // Pfeil oben
+    bindKey('btn-down', 40);  // Pfeil unten
+    bindKey('btn-left', 37);  // Pfeil links
+    bindKey('btn-right', 39); // Pfeil rechts
+    bindKey('btn-a', 88);     // X-Taste (Springen)
+    bindKey('btn-b', 67);     // C-Taste (Schlagen)
+    bindKey('btn-z', 90);     // Z-Taste (Ducken)
+    bindKey('btn-s', 13);     // Enter (Start)
+  })();
+</script>
+
 </html>
 
 
